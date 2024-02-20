@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 actix-web = "4"
 postgres = "0.19.7"
+time = { version = "0.3", features = ["macros"] }

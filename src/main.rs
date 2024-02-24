@@ -5,7 +5,8 @@ use actix_web::{get, App, HttpResponse, HttpServer, Responder};
 use postgres::{Client, NoTls};
 
 fn main() {
-    let _ = database();
+    database();
+    let _ = server();
 }
 
 fn database() {

@@ -1,5 +1,12 @@
 use postgres::Client;
 use time::OffsetDateTime;
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
+pub struct MessageStruct {
+    message: String,
+    date: String,
+}
 
 pub fn create_message_table(client: &mut Client) {
     println!("creating the table Person...");
@@ -20,6 +27,17 @@ pub fn create_message_table(client: &mut Client) {
         Err(error) => {
             println!("Error to create the table Message: {:?}", error)
         }
+    }
+}
+
+pub fn get_last_message(client: &mut Client) -> Result<MessageStruct, postgres::Error> {
+    match client.query("SELECT * FROM message BY id DESC LIMIT 1", &[]) {
+        Ok(result) => {
+            let message = result[0].get(1);
+            let date = result[0].get(2);
+            Result::Ok(MessageStruct { message, date })
+        }
+        Err(error) => Result::Err(error),
     }
 }
 

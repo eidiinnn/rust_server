@@ -31,7 +31,7 @@ pub fn create_message_table(client: &mut Client) {
 }
 
 pub fn get_last_message(client: &mut Client) -> Result<MessageStruct, postgres::Error> {
-    match client.query("SELECT * FROM message BY id DESC LIMIT 1", &[]) {
+    match client.query("SELECT * FROM message ORDER BY id DESC LIMIT 1", &[]) {
         Ok(result) => {
             let message = result[0].get(1);
             let date = result[0].get(2);

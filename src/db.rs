@@ -12,7 +12,7 @@ lazy_static! {
 }
 
 
-pub(crate) fn get_connection() -> MutexGuard<'static, Client> {
+pub fn get_connection() -> MutexGuard<'static, Client> {
    let client = DB_CLIENT.lock().unwrap();
    client
 }

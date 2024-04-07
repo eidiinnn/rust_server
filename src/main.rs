@@ -1,10 +1,5 @@
-mod api_endpoints;
-mod db;
-mod db_messages;
-mod api_web;
-#[cfg(feature = "inline")]
-mod inline;
 use actix_web::{App, HttpServer};
+use rust_server::{api_endpoints, api_web, db, db_messages};
 
 fn main() {
     init_database();

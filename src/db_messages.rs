@@ -35,9 +35,13 @@ pub fn get_last_message(client: &mut Client) -> Result<MessageStruct, postgres::
         Ok(result) => {
             let message = result[0].get(1);
             let date = result[0].get(2);
+            println!("Get the last message {:?}", message);
             Result::Ok(MessageStruct { message, date })
         }
-        Err(error) => Result::Err(error),
+        Err(error) => {
+            println!("Error to get the last message: {:?}", error);
+            Result::Err(error)
+        }
     }
 }
 
@@ -49,11 +53,11 @@ pub fn insert_into_messages(client: &mut Client, message: String) -> Result<(), 
 
     match result {
         Ok(_) => {
-            println!("The message {:?}", message);
+            println!("Insert the message {:?}", message);
             return Ok(());
         }
         Err(error) => {
-            println!("Error to print the message '{:?}': {:?}", message, error);
+            println!("Error to insert the message'{:?}': {:?}", message, error);
             return Err(error);
         }
     }

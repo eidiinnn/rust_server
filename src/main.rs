@@ -1,6 +1,9 @@
 mod api_endpoints;
 mod db;
 mod db_messages;
+mod api_web;
+#[cfg(feature = "inline")]
+mod inline;
 use actix_web::{App, HttpServer};
 
 fn main() {
@@ -21,6 +24,7 @@ async fn server() -> std::io::Result<()> {
         App::new()
             .service(api_endpoints::get_last_massage)
             .service(api_endpoints::write_message)
+            .service(api_web::home)
     })
     .bind(("127.0.0.1", 3000))?
     .run()

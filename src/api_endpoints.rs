@@ -25,12 +25,11 @@ async fn get_last_massage() -> HttpResponse {
 }
 
 #[derive(Deserialize)]
-pub struct MyData {
+pub struct WriteMessageData {
     message: String,
 }
-
 #[get("/write_message")]
-async fn write_message(req: web::Json<MyData>) -> HttpResponse {
+async fn write_message(req: web::Json<WriteMessageData>) -> HttpResponse {
     let json = req.into_inner();
     if json.message.is_empty() {
         return HttpResponse::BadRequest().body("Empty message");

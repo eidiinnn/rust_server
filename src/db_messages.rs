@@ -1,6 +1,6 @@
 use postgres::Client;
-use time::OffsetDateTime;
 use serde::{Deserialize, Serialize};
+use time::OffsetDateTime;
 
 #[derive(Serialize, Deserialize)]
 pub struct MessageStruct {
@@ -41,14 +41,20 @@ pub fn get_last_message(client: &mut Client) -> Result<MessageStruct, postgres::
     }
 }
 
-pub fn insert_into_messages(client: &mut Client, message: String) {
+pub fn insert_into_messages(client: &mut Client, message: String) -> Result<(), postgres::Error> {
     let result = client.execute(
         "INSERT INTO message (message, data) VALUES ($1, $2)",
         &[&message, &OffsetDateTime::now_utc().to_string()],
     );
 
     match result {
-        Ok(_) => println!("The message {:?}", message),
-        Err(error) => println!("Error to print the message '{:?}': {:?}", message, error),
+        Ok(_) => {
+            println!("The message {:?}", message);
+            return Ok(());
+        }
+        Err(error) => {
+            println!("Error to print the message '{:?}': {:?}", message, error);
+            return Err(error);
+        }
     }
 }

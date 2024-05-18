@@ -2,12 +2,13 @@ use crate::db::get_connection;
 use crate::db_messages;
 use actix_web::{
     get,
+    post,
     web::{self, block},
     HttpResponse,
 };
 use serde::Deserialize;
 
-#[get("/get_last_message")]
+#[get("/api/getLastMessage")]
 async fn get_last_massage() -> HttpResponse {
     let response = block(|| {
         let mut client = get_connection();
@@ -19,7 +20,7 @@ async fn get_last_massage() -> HttpResponse {
     .await;
 
     match response {
-        Ok(json) => HttpResponse::Ok().body(json.unwrap()),
+        Ok(json) => HttpResponse::Ok().append_header(("content-type", "json")).body(json.unwrap()),
         Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
     }
 }
@@ -28,7 +29,7 @@ async fn get_last_massage() -> HttpResponse {
 pub struct WriteMessageData {
     message: String,
 }
-#[get("/write_message")]
+#[post("/api/writeMessage")]
 async fn write_message(req: web::Json<WriteMessageData>) -> HttpResponse {
     let json = req.into_inner();
     if json.message.is_empty() {

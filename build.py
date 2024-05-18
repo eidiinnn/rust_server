@@ -1,26 +1,19 @@
 import os
+import shutil
 
-def createInline():
-   print("creating inline.rs")
-   inline_location = "src/inline.rs"
+public_location = "./static"
+build_location = "target/release/static"
 
-   if os.path.exists(inline_location):
-      os.remove(inline_location)
-
-   home_html = open("web/home.html")
-   inline_rs = open(inline_location, "x")
-
-   inline_rs.write(f"pub const HOME_HTML: &str = \"{home_html.read().replace("\"", "\\\"")}\";")
-   inline_rs.write("\n")
-   inline_rs.write("pub fn get_home() -> String {HOME_HTML.to_string()} ")
-   inline_rs.close()
-   print("inline.rs created!")
+def movePublic():
+   print(f"moving the public files to build location")
+   shutil.move(public_location, build_location)
+   print("public moved!")
 
 def main():
    print("starting...")
-   createInline()
+   movePublic()
 
 if __name__ == "__main__":
    main()
    print("start building")
-   os.system("cargo build --release --features inline")
+   os.system("cargo build --release")

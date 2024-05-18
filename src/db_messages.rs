@@ -9,7 +9,7 @@ pub struct MessageStruct {
 }
 
 pub fn create_message_table(client: &mut Client) {
-    println!("creating the table Person...");
+    println!("creating the table Message...");
     let result = client.batch_execute(
         "
          CREATE TABLE IF NOT EXISTS message (

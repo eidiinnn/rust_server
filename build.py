@@ -1,19 +1,22 @@
 import os
 import shutil
 
-public_location = "./static"
-build_location = "target/release/static"
+dirpath = os.path.dirname(os.path.realpath(__file__))
+static_location = os.path.join(dirpath, "static")
+build_location = os.path.join(dirpath, "target/release/static")
 
 def movePublic():
-   print(f"moving the public files to build location")
-   shutil.move(public_location, build_location)
+   print("moving the static files to build location")
+   if os.path.exists(build_location):
+      shutil.rmtree(build_location)
+   shutil.copytree(static_location, build_location)
    print("public moved!")
 
 def main():
    print("starting...")
+   os.system("cargo build --release")
    movePublic()
 
 if __name__ == "__main__":
    main()
-   print("start building")
-   os.system("cargo build --release")
+  
